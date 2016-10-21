@@ -14,7 +14,7 @@ var cars = {
     var getPlugins = function () {
 
         return [
-            new SBJS.plugins.DataLoader({url: './data/cars.json'})
+            new Kaas.plugins.DataLoader({url: './data/cars.json'})
         ]
     };
 
@@ -24,10 +24,10 @@ var cars = {
      */
     var getCellFormatters = function () {
         return {
-            revenue: SBJS.formatters.MoneyFormat.format,
-            margin: SBJS.formatters.MoneyFormat.format,
-            percentage: SBJS.formatters.PercentageFormat.format,
-            t2s: SBJS.formatters.PercentageFormat.format
+            revenue: Kaas.formatters.MoneyFormat.format,
+            margin: Kaas.formatters.MoneyFormat.format,
+            percentage: Kaas.formatters.PercentageFormat.format,
+            t2s: Kaas.formatters.PercentageFormat.format
         }
     }
 
@@ -39,7 +39,7 @@ var cars = {
      */
     var getSummaryFields = function () {
         return {
-            revenue: SBJS.formatters.MoneyFormat.format
+            revenue: Kaas.formatters.MoneyFormat.format
         }
     };
 
@@ -60,7 +60,7 @@ var cars = {
      */
     var init = function () {
         var element = document.querySelector('#cars-table');
-        cars.datagrid.grid = new SBJS.DataGrid({
+        cars.datagrid.grid = new Kaas.DataGrid({
             element: element,
             plugins: getPlugins(),
             cellFormatters: getCellFormatters(),
@@ -79,7 +79,7 @@ var cars = {
         document.removeEventListener('DOMContentLoaded', load);
     };
 
-    SBJS.util.DomReady(load);
+    Kaas.util.DomReady(load);
 
 }) (SBJS, cars);
 
