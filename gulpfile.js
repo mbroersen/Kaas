@@ -11,7 +11,7 @@ gulp.task('jsminify', function () {
 
     return browserify({entries: ['./src/js/main.jsx'], extensions: ['.jsx'], debug: false, standalone: "Kaas"}).transform(babelify)
         .bundle()
-        .pipe(source('sbjs.min.js'))
+        .pipe(source('kaas.min.js'))
         .pipe(buffer())
         .pipe(uglify())
         .pipe(gulp.dest('build/js/'));
