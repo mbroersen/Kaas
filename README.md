@@ -3,7 +3,7 @@
 Javascript DataGrid for large Data-tables. 
 Made in Holland. 
 
-### Contains
+### Ingredients
 * Client side sorting
 * Cell Data formatting
 * Hide columns
