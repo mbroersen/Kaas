@@ -5,7 +5,7 @@ var cars = {
     }
 };
 
-(function (SBJS, cars) {
+(function (Kaas, cars) {
     /**
      * List of used plugins
      *
@@ -81,6 +81,6 @@ var cars = {
 
     Kaas.util.DomReady(load);
 
-}) (SBJS, cars);
+}) (Kaas, cars);
 
 
