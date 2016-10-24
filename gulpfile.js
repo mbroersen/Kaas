@@ -9,11 +9,11 @@ var sass = require('gulp-sass');
 
 gulp.task('jsminify', function () {
 
-    return browserify({entries: ['./src/js/main.jsx'], extensions: ['.jsx'], debug: false, standalone: "Kaas"}).transform(babelify)
+    return browserify({entries: ['./src/js/Kaas.jsx'], extensions: ['.jsx'], debug: false, standalone: "Kaas"}).transform(babelify)
         .bundle()
         .pipe(source('kaas.min.js'))
         .pipe(buffer())
-        .pipe(uglify())
+        .pipe(uglify({sourceMap: true}))
         .pipe(gulp.dest('build/js/'));
 
 });

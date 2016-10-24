@@ -15,7 +15,15 @@ class DataGrid
 {
     /**
      *
-     * @param options
+     * @param {object} [options]
+     * @param {HTMLElement} [options.element]
+     * @param {function} [options.rowFormatter]
+     * @param {object} [options.cellFormatters]
+     * @param {object} [options.summaryFields]
+     * @param {boolean} [options.selectable]
+     * @param {string} [options.statusText]
+     * @param {array} [options.plugins]
+     *
      */
     constructor(options)
     {
@@ -44,6 +52,39 @@ class DataGrid
         this._enableSelectableRows();
         this.element.dispatchEvent(this.createInitEvent());
     };
+
+    /**
+     *
+     */
+    reset()
+    {
+        /**
+         *
+         * @type {HTMLTableElement|boolean}
+         */
+        this.element = this.settings.get('element', document.querySelector('table'));
+
+        this.yScrollContainer = this.element.parentNode;
+        this.yScrollContainer.setAttribute('tabindex', "-1");
+
+        var newBody = document.createElement("tbody");
+
+        this.dataRegister = [];
+        this.summaryRegister = new DataSummary(this.settings.getAll());
+        this.summaryFields = this.settings.get('summaryFields', {});
+        this.settings.change('summaryRegister', this.summaryRegister);
+        this.parser = new JsonParser(this.settings.getAll());
+        this.display = new CoreDisplay({dataTable: this.element, summaryFields: this.summaryFields, summaryRegister: this.summaryRegister});
+        this.display.switchCurrentBody(newBody);
+        this.lastScrollY = 0;
+
+        this.element.dispatchEvent(this.createResetEvent());
+
+        if (this.selectAllInput && this.selectAllInput.checked) {
+            this.selectAllInput.click();
+        }
+    }
+
 
     /**
      *
@@ -371,38 +412,6 @@ class DataGrid
         this.element.dispatchEvent(this.createAfterScrollEvent());
         this.scrollTimeOut = 0;
     };
-
-    /**
-     * 
-     */
-    reset()
-    {
-        /**
-         *
-         * @type {HTMLTableElement|boolean}
-         */
-        this.element = this.settings.get('element', document.querySelector('table'));
-
-        this.yScrollContainer = this.element.parentNode;
-        this.yScrollContainer.setAttribute('tabindex', "-1");
-
-        var newBody = document.createElement("tbody");
-
-        this.dataRegister = [];
-        this.summaryRegister = new DataSummary(this.settings.getAll());
-        this.summaryFields = this.settings.get('summaryFields', {});
-        this.settings.change('summaryRegister', this.summaryRegister);
-        this.parser = new JsonParser(this.settings.getAll());
-        this.display = new CoreDisplay({dataTable: this.element, summaryFields: this.summaryFields, summaryRegister: this.summaryRegister});
-        this.display.switchCurrentBody(newBody);
-        this.lastScrollY = 0;
-
-        this.element.dispatchEvent(this.createResetEvent());
-
-        if (this.selectAllInput && this.selectAllInput.checked) {
-            this.selectAllInput.click();
-        }
-    }
 
     /**
      *
