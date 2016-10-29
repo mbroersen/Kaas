@@ -2,7 +2,11 @@ class CoreColumn {
 
     /**
      *
-     * @param options
+     * @param {object} [options]
+     * @param {HTMLElement} [options.mainContainer]
+     * @param {array} [options.hiddenColumns]
+     *
+     *
      */
     constructor(options)
     {

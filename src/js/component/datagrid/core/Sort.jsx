@@ -3,7 +3,10 @@ class CoreSort
 
     /**
      *
-     * @param options
+     * @param [options]
+     * @param {function} [options.sortDataHandler]
+     * @param {number} [options.sortField]
+     * @param {number} [options.sortDirection]
      */
     constructor (options)
     {

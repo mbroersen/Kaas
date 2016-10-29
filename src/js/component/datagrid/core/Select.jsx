@@ -4,7 +4,10 @@ class Select
 {
     /**
      *
-     * @param options
+     * @param [options]
+     * @param {HTMLElement} [options.row]
+     * @param {function} [options.onSelect]
+     *
      */
     constructor (options)
     {
