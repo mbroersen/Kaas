@@ -1,5 +1,13 @@
-class UtilSetting {
+/**
+ *
+ */
+class UtilSetting
+{
 
+    /**
+     *
+     * @param {Object} options
+     */
     constructor(options)
     {
         if (options === undefined) {

@@ -1,5 +1,13 @@
 class UtilObject
 {
+    /**
+     *
+     * @param {Object} obj
+     * @param {Object} target2
+     * @returns {*}
+     * @alias Kaas/util:Merge
+     * @static
+     */
     static Merge(obj, target2)
     {
         if (typeof Object.assign != 'function') {
@@ -27,7 +35,12 @@ class UtilObject
         return Object.assign(obj, target2);
     }
 
-
+    /**
+     *
+     * @alias Kaas/util:DomReady
+     * @param {Function} callback
+     * @static
+     */
     static DomReady(callback) {
         if (document.readyState != 'loading'){
             callback();
