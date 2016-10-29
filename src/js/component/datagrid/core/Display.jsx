@@ -1,13 +1,17 @@
 import DataElments from "../data/Elements";
 
+/**
+ *
+ */
 class CoreDisplay
 {
-
-
-
     /**
      * 
-     * @param options
+     * @param {object} [options]
+     * @param {HTMLElement} [options.dataTable]
+     * @param {object} [options.summaryFields]
+     * @param {DataSummary} [options.summaryRegister]
+     *
      */
     constructor (options) 
     {
@@ -94,15 +98,13 @@ class CoreDisplay
         const MODE_RENDERING = 20;
         const MODE_IDLE = 10;
 
-        if (rows.length == 0) {
-            return this.renderText('We have no items to show in this selection');
-        }
-
         if (this.mode == MODE_RENDERING) {
             return;
         }
 
-        this.mode = MODE_RENDERING;
+        if (rows.length == 0) {
+            return this.renderText('We have no items to show in this selection');
+        }
 
         if (this._rowHeight == 0) {
             rows[0].render();
@@ -112,9 +114,11 @@ class CoreDisplay
         var start = this.getStart(rows);
 
         if (Math.abs(this.start - start) < this._getNumberOfRowsInView() && force !== true) {
-            this.mode = MODE_IDLE;
             return false;
         }
+
+        this.mode = MODE_RENDERING;
+        this.start = start;
 
         var fragment = document.createDocumentFragment(),
             newBody = DataElments.tbody.cloneNode(false),
@@ -149,8 +153,6 @@ class CoreDisplay
         });
 
         newBody.replaceChild(fragment, midFiller);
-
-        this.start = start;
         this.mode = MODE_IDLE;
 
         return this.currentBody;
@@ -225,8 +227,7 @@ class CoreDisplay
 
             this.dataTable.appendChild(tmpBody);
             this._rowHeight = tmpTr.offsetHeight;
-
-            tmpBody.removeChild(tmpTr);
+            this.dataTable.removeChild(tmpBody);
         }
 
         return this._rowHeight;
@@ -313,16 +314,19 @@ class CoreDisplay
             this.dataTable.replaceChild(newBody, this.currentBody);
             this.currentBody = newBody;
             return;
-        } else if (this.dataTable.querySelector('tbody')) {
-            var oldBody = this.dataTable.querySelector('tbody');
+        }
+
+        var oldBody = this.dataTable.querySelector('tbody');
+        if (oldBody) {
             this.dataTable.replaceChild(newBody, oldBody);
             this.currentBody = oldBody;
             return;
         }
 
+
+
         this.dataTable.appendChild(newBody);
         this.currentBody = newBody;
-
     }
 
 
