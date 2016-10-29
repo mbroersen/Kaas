@@ -4,25 +4,100 @@ class DataLoader
 {
 
     /**
+     * @example
      *
-     * @param options
+     * var options = {
+     *  button: document.querySelector('#btn-reload'),
+     *  url: '/test.php',
+     *  form: document.querySelector('form'),
+     *  limit: 200,
+     *  data: {test: test}, //adds parameter test to form post-data
+     *  onLoadStart: function () {
+     *      alert('start loading');
+     *  }
+     * }
+     *
+     * new Kaas.plugins.DataLoader(options);
+     *
+     * @param {Object} [options]
+     * @param {HTMLElement} [options.button]
+     * @param {String} [options.url]
+     * @param {HTMLFormElement} [options.form]
+     * @param {number} [options.limit]
+     * @param {Object} [options.data]
+     * @param {Function} [options.onLoadStart]
+     *
+     *
      */
     constructor (options) {
+        /**
+         *
+         * @type {Request}
+         */
         this.currentRequest = null;
+
+        /**
+         *
+         * @type {Object}
+         */
         this.options = options || {};
+
+        /**
+         *
+         * @type {HTMLElement}
+         * @default document.querySelector('#btn-reload')
+         */
         this.searchButton = options.button || document.querySelector('#btn-reload');
+
+        /**
+         *
+         * @type {String}
+         */
         this.url = options.url;
+
+        /**
+         *
+         * @type {HTMLFormElement}
+         * @default document.querySelector('form');
+         */
         this.form = options.form || document.querySelector('form');
+
+        /**
+         *
+         * @type {number}
+         * @default 200
+         */
         this.limit = options.limit || 200;
+
+        /**
+         *
+         * @type {Object}
+         * @default {Object} empty object
+         */
         this.data = options.data || {};
+
+        /**
+         *
+         * @type {number}
+         * @default 0
+         *
+         */
         this.offset = 0;
+
+        /**
+         *
+         * @type {Function}
+         * @default {Function} empty function
+         *
+         */
         this.onLoadStart = options.onLoadStart || function () {};
     }
 
 
     /**
      *
-     * @param e
+     * @param CustomEvent e
+     * @private
      */
     init(e)
     {
@@ -65,7 +140,6 @@ class DataLoader
 
         var me = this;
         let _success = function (result) {
-            me.datagrid.renderText("loading....");
             var resultLength = result.length;
             me.datagrid.addRows(JSON.stringify(result));
             document.querySelector('.table-status-info .loader').classList.remove('hidden');
