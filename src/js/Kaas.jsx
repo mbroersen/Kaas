@@ -17,7 +17,7 @@ module.exports = {
         DataLoader: require('./plugin/DataLoader')
     },
     util: require('./util/UtilObject'),
-    version: 0.6
+    version: "0.6.1",
 };
 
 
