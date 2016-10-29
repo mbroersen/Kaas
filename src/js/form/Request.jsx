@@ -6,8 +6,29 @@ import FormData from "./Data";
 class FormRequest {
 
     /**
+     * @example
      *
-     * @param options
+     * var options = {
+     *  url: '/list.php',
+     *  element: document.querySelector('form'),
+     *  requestType: 'POST',
+     *  data: {test: 'test'}, //adds test parameter to form data,
+     *  success: function () {alert('SUCCESS!') },
+     *  complete: function () {alert('All data loaded!') },
+     *  error: function () {alert('Error!') },
+     * }
+     *
+     * (new Kaas.form.Request(options)).send();
+     *
+     *
+     * @param {Object} [options]
+     * @param {String} [options.url]
+     * @param {HTMLFormElement} [options.element]
+     * @param {String} [options.requestType]
+     * @param {Object} [options.data]
+     * @param {Function} [options.complete]
+     * @param {Function} [options.success]
+     * @param {Function} [options.error]
      */
     constructor (options) {
 
@@ -26,14 +47,65 @@ class FormRequest {
         this.REQUEST_TYPE_POST = REQUEST_TYPE_POST;
         this.REQUEST_TYPE_GET = REQUEST_TYPE_GET;
 
+        /**
+         *
+         * @type {String}
+         * @private
+         */
         this.url = options.url || "./index.html";
+
+        /**
+         *
+         * @type {Function}
+         * @private
+         */
         this.complete = options.complete || function () {};
+
+        /**
+         *
+         * @type {Function}
+         */
         this.success = options.success || function () {};
+
+        /**
+         *
+         * @type {Function}
+         * @private
+         */
         this.error = options.error || function () {};
+
+        /**
+         *
+         * @type {HTMLFormElement}
+         * @private
+         */
         this.element = options.element || null;
+
+        /**
+         *
+         * @type {number}
+         * @private
+         */
         this.status = 0;
+
+        /**
+         *
+         * @type {Object}
+         * @private
+         */
         this.data = options.data || false;
+
+        /**
+         *
+         * @type {String}
+         * @private
+         */
         this.requestType = options.type || REQUEST_TYPE_POST;
+
+        /**
+         *
+         * @type {FormData}
+         */
         this.dataHelper = new FormData({element: (options.element || null)});
     };
 
@@ -132,7 +204,7 @@ class FormRequest {
 
 
     /**
-     *
+     * @private
      */
     createGetRequest()
     {
@@ -153,7 +225,7 @@ class FormRequest {
     }
 
     /**
-     *
+     * @private
      */
     createPostRequest()
     {
@@ -186,7 +258,7 @@ class FormRequest {
 
     /**
      *
-     * @param ele
+     * @param HTMLElement ele
      */
     addHTMLTo(ele)
     {
