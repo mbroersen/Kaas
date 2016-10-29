@@ -5,30 +5,84 @@ import CoreSort from "./core/Sort";
 import CoreColumn from "./core/Column";
 import {JsonParser} from "./data/Json";
 import UtilObject from "../../util/UtilObject";
+import DataElements from "./data/Elements";
 
 
 
 /**
  *
+ *
+ * @alias Kaas/Datagrid
+ *
+ * @cLass
  */
 class DataGrid
 {
     /**
+     * @example
      *
-     * @param {object} [options]
+     *
+     *  var getPlugins = function () {
+     *      return [
+     *          new Kaas.plugins.DataLoader({url: './data/cars.json'})
+     *      ]
+     *  };
+     *
+     *  var getCellFormatters = function () {
+     *      return {
+     *          model_weight_kg: Kaas.formatters.AmountFormat.format
+     *      }
+     *   };
+     *
+     *  var getSummaryFields = function () {
+     *      return {
+     *          model_weight_kg: Kaas.formatters.AmountFormat.format
+     *      }
+     *  };
+     *
+     * var rowFormatter = function(data) {
+     *   delete data.model_lkm_city; //remove this data row
+     *   data.options = "options"; //add options row to
+     *   return data;
+     * };
+     *
+     * var init = function () {
+     *   var element = document.querySelector('#cars-table');
+     *   new Kaas.DataGrid({
+     *      element: element,
+     *      plugins: getPlugins(),
+     *       cellFormatters: getCellFormatters(),
+     *       summaryFields: getSummaryFields(),
+     *       rowHandler: rowFormatter,
+     *       statusText: '%d Cars'
+     *   });
+     * };
+     *
+     *
+     * @param {Object} [options]
      * @param {HTMLElement} [options.element]
-     * @param {function} [options.rowFormatter]
-     * @param {object} [options.cellFormatters]
-     * @param {object} [options.summaryFields]
+     * @param {Function} [options.rowFormatter]
+     * @param {Object} [options.summaryFields]
      * @param {boolean} [options.selectable]
-     * @param {string} [options.statusText]
-     * @param {array} [options.plugins]
+     * @param {String} [options.statusText]
+     * @param {Array} [options.plugins]
+     * @param {{fieldName: {String}, form: {HTMLFormElement}, saveDataFormatter: {Function}}} [options.editableCells]
+     * @param {{Function}} [options.cellFormatters]
+     * @param {{Function}} [options.sortFormatters]
+     * @param {{Function}}[options.cellClassFormatters]
+     * @param {Function} [options.rowHandler]
      *
      */
     constructor(options)
     {
         options = options || {};
+
+        /**
+         * @private
+         * @type {UtilSetting}
+         */
         this.settings = new UtilSetting(options);
+
         this.reset();
         this._init();
     };
@@ -40,6 +94,11 @@ class DataGrid
     _init ()
     {
         var me = this;
+
+        /**
+         *
+         * @type {CoreSort}
+         */
         this.sortHandler = new CoreSort(this.settings.getAll());
 
         this._initScrollEvents();
@@ -64,18 +123,52 @@ class DataGrid
          */
         this.element = this.settings.get('element', document.querySelector('table'));
 
+        /**
+         *
+         * @type {Node}
+         */
         this.yScrollContainer = this.element.parentNode;
         this.yScrollContainer.setAttribute('tabindex', "-1");
 
-        var newBody = document.createElement("tbody");
+        var newBody = document.querySelector("tbody") || document.createElement("tbody");
 
+        /**
+         * @private
+         * @type {Array}
+         */
         this.dataRegister = [];
+
+        /**
+         *
+         * @type {DataSummary}
+         */
         this.summaryRegister = new DataSummary(this.settings.getAll());
+
+        /**
+         *
+         * @orivate
+         * @type {Object}
+         */
         this.summaryFields = this.settings.get('summaryFields', {});
         this.settings.change('summaryRegister', this.summaryRegister);
+
+        /**
+         * @private
+         * @type {JsonParser}
+         */
         this.parser = new JsonParser(this.settings.getAll());
+
+        /**
+         * @private
+         * @type {CoreDisplay}
+         */
         this.display = new CoreDisplay({dataTable: this.element, summaryFields: this.summaryFields, summaryRegister: this.summaryRegister});
         this.display.switchCurrentBody(newBody);
+
+        /**
+         * @private
+         * @type {number}
+         */
         this.lastScrollY = 0;
 
         this.element.dispatchEvent(this.createResetEvent());
@@ -110,7 +203,7 @@ class DataGrid
     _getMainContainer()
     {
         if (!this.settings.has('mainContainer')) {
-            this.settings.add('mainContainer', this.element.parentNode.parentNode.parentNode);
+            this.settings.add('mainContainer', this.element.parentNode.parentNode);
         }
 
         return this.settings.get('mainContainer', false);
@@ -160,14 +253,18 @@ class DataGrid
      */
     _enableSelectableRows()
     {
-        if (this.settings.get('selectable', false) == false) {
+        if (this.settings.get('selectable', true) == false) {
             return;
         }
 
         var me = this;
 
-        this.selectAllInput = document.createElement('input');
-        this.selectAllInput.setAttribute('type', 'checkbox');
+        /**
+         * @private
+         * @type {Element}
+         */
+        this.selectAllInput = DataElements.checkbox.cloneNode(true);
+
         this._getHeaderCols()[0].appendChild(this.selectAllInput);
 
         this.selectAllInput.addEventListener('click', function (e) {
@@ -177,8 +274,13 @@ class DataGrid
     };
 
     /**
+     * @example
      *
-     * @param columns
+     * var hiddenColumns = [1,2,3]
+     * myDataGrid.hideColumns(hiddenColumns);
+     *
+     *
+     * @param {Array} columns // array of column numbers
      */
     hideColumns(columns)
     {
@@ -187,8 +289,8 @@ class DataGrid
 
     /**
      *
-     * @param cell
-     * @param data
+     * @param {number} cell
+     * @param {HTMLElement|DocumentFragment|String} data
      */
     updateCellData(cell, data)
     {
@@ -208,7 +310,7 @@ class DataGrid
 
     /**
      *
-     * @returns {{}}
+     * @returns {{}} //data from edit mode
      */
     getFormsData()
     {
@@ -235,7 +337,7 @@ class DataGrid
 
 
     /**
-     *
+     * @private
      */
     onSave()
     {
@@ -248,7 +350,7 @@ class DataGrid
     }
 
     /**
-     *
+     * @private
      */
     onCancel()
     {
@@ -282,8 +384,7 @@ class DataGrid
 
 
     /**
-     *
-     * @param json
+     * @param {String} json //Json result string
      */
     addRows (json) 
     {
@@ -303,6 +404,7 @@ class DataGrid
 
     /**
      *
+     * @private
      */
     setStatusText() 
     {
@@ -312,17 +414,17 @@ class DataGrid
 
     /**
      *
-     * @param text
+     * @param {String} text
      */
     renderText (text)
     {
          this.display.renderText(text);
-
     };
 
 
     /**
      *
+     * @param {Boolean} force
      */
     render (force)
     {
@@ -343,7 +445,10 @@ class DataGrid
 
     /**
      *
-     * @param dir
+     * @private
+     *
+     * @param {number} field
+     * @param {number} dir
      */
     setSortDirection(field, dir)
     {
@@ -360,8 +465,8 @@ class DataGrid
 
     /**
      *
-     * @param field
-     * @param dir
+     * @param {number} field
+     * @param {number} dir
      */
     sort (field, dir)
     {
@@ -378,7 +483,9 @@ class DataGrid
 
     /**
      *
-     * @param field
+     * @private
+     * @param {number} field
+     *
      */
     setSortHeader(field)
     {
@@ -415,6 +522,7 @@ class DataGrid
 
     /**
      *
+     * @private
      * @returns {CustomEvent}
      */
     createInitEvent()
@@ -425,6 +533,7 @@ class DataGrid
 
     /**
      *
+     * @private
      * @returns {CustomEvent}
      */
     createPreSaveEvent()
@@ -436,6 +545,7 @@ class DataGrid
 
     /**
      *
+     * @private
      * @returns {CustomEvent}
      */
     createScrollFocusEvent()
@@ -447,7 +557,7 @@ class DataGrid
 
 
     /**
-     *
+     * @private
      * @returns {CustomEvent}
      */
     createOnSaveEvent()
@@ -459,7 +569,8 @@ class DataGrid
 
 
     /**
-     * 
+     *
+     * @private
      * @returns {CustomEvent}
      */
     createAfterScrollEvent() 
@@ -469,7 +580,8 @@ class DataGrid
     }
     
     /**
-     * 
+     *
+     * @private
      * @returns {CustomEvent}
      */
     createResetEvent() 
@@ -480,7 +592,7 @@ class DataGrid
 
     /**
      *
-     * @returns {{direction: *, column: *}}
+     * @returns {{direction: {number}, column: {number}}}
      */
     getSortSettings()
     {
@@ -492,7 +604,7 @@ class DataGrid
 
     /**
      *
-     * @param plugin
+     * @param {Plugin} plugin
      */
     registerPlugin (plugin)
     {
