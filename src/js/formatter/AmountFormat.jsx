@@ -1,10 +1,10 @@
-
-class AmountFormat 
+class AmountFormat
 {
     /**
      *
      * @param data
      * @param d
+     *
      * @returns {string}
      */
     static numberFormat(data, d)
@@ -21,9 +21,11 @@ class AmountFormat
 
     /**
      *
-     * @param data
-     * @param rowData
-     * @returns {*}
+     * @param {number} data
+     * @param {Object} rowData
+     * @static
+     * @alias Kaas/formatter/AmountFormat:format
+     * @returns {String}
      */
     static format(data, rowData)
     {

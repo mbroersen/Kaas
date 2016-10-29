@@ -4,8 +4,11 @@ class MoneyFormat {
 
     /**
      * 
-     * @param data
-     * @param rowData
+     * @param {number} data
+     * @param {Object} rowData
+     * @static
+     * @alias Kaas/formatter/MoneyFormat:format
+     * @see Kaas/formatter/AmountFormat:format
      * @returns {string}
      */
     static format(data, rowData) 
