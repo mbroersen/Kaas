@@ -3,12 +3,43 @@
  */
 
 class HiddenColumns {
-
+    /**
+     *  @example
+     *
+     *  var options = {
+     *      presets: document.querySelectorAll('.datagrid-column-preset-toggle'),
+     *      checkboxContainer: document.querySelectorAll('#checkbox-filters'),
+     *  }
+     *
+     *  new Kaas.plugins.HiddenColumns(options);
+     *
+     *
+     * @param [options]
+     * @param {HTMLElement} [options.presets]
+     * @param {HTMLElement} [options.checkboxContainer]
+     *
+     */
     constructor (options)
     {
         options = options || {};
+
+        /**
+         * @default document.querySelectorAll(".datagrid-column-preset-toggle")
+         * @type {HTMLElement}
+         */
         this.presets = options.presets || document.querySelectorAll(".datagrid-column-preset-toggle");
+
+        /**
+         * @default document.querySelector("#checkbox-filters")
+         *
+         * @type {HTMLElement}
+         */
         this.checkboxContainer = options.checkboxContainer || document.querySelector("#checkbox-filters");
+
+        /**
+         *
+         * @type {NodeList}
+         */
         this.checkboxes = this.checkboxContainer.querySelectorAll("[type='checkbox']");
 
     }

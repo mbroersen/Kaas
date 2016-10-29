@@ -2,8 +2,20 @@ class EditMenu
 {
 
     /**
+     * @example
      *
-     * @param options
+     * var options = {
+     *  element: document.querySelector('#datagrid-edit-menu')
+     * };
+     *
+     * new Kaas.plugin.EditMenu(options);
+     *
+     *
+     * @param [options]
+     * @alias Kaas/plugins/EditMenu
+     *
+     * @param HTMLElement [options.element]
+     *
      */
     constructor(options)
     {
@@ -11,6 +23,7 @@ class EditMenu
     }
 
     /**
+     *
      *
      */
     hide ()
@@ -31,7 +44,9 @@ class EditMenu
     }
 
     /**
+     * Shows menu and adds event listeners
      *
+     * @param {DataGrid} parent
      */
     show(parent)
     {
@@ -61,7 +76,7 @@ class EditMenu
     }
 
     /**
-     *
+     * @private
      */
     reset()
     {
@@ -70,7 +85,8 @@ class EditMenu
 
     /**
      *
-     * @param e
+     * @param CustomEvent e
+     * @private
      */
     selectRow(e, element, parent)
     {
@@ -79,7 +95,8 @@ class EditMenu
 
     /**
      *
-     * @param e
+     * @param CustomEvent e
+     * @private
      */
     unSelectRow(e, element, parent)
     {

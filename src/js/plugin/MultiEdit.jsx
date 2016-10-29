@@ -3,8 +3,26 @@ import FormRequest from "../form/Request";
 class MultiEdit
 {
     /**
+     * @example
      *
-     * @param options
+     * var options = {
+     *  url: '/save.php'
+     *  onStart: function () { alert('start')},
+     *  onSuccess: function () { alert('edit successfull')},
+     *  onFail: function () { alert('error')},
+     *  onNoChanges: function ( alert('nothing changed') )
+     * };
+     *
+     * new Kaas.plugins.MultiEdit(options);
+     *
+     *
+     * @param [options]
+     * @param {String} [options.url]
+     * @param {Function} [options.onStart]
+     * @param {Function} [options.onSuccess]
+     * @param {Function} [options.onFail]
+     * @param {Function} [options.onNoChanges]
+     *
      */
     constructor(options)
     {
@@ -17,7 +35,8 @@ class MultiEdit
 
     /**
      *
-     * @param e
+     * @param CustomEvent e
+     * @private
      */
     preSave(e)
     {
@@ -26,7 +45,8 @@ class MultiEdit
 
     /**
      *
-     * @param e
+     * @param CustomEvent e
+     * @private
      */
     onSave(e) {
         
