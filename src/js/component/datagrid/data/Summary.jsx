@@ -1,8 +1,26 @@
+/**
+ *
+ */
 class DataSummary {
 
+    /**
+     *
+     * @param {Object} [options]
+     * @param {Object} [options.summaryFields]
+     *
+     */
     constructor(options)
     {
+        /**
+         *
+         * @type {Object}
+         */
         this.summaryRegister = {};
+
+        /**
+         *
+         * @type {Object}
+         */
         this.formatters = options.summaryFields || {};
     }
 

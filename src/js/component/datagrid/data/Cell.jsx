@@ -1,17 +1,16 @@
 import elements from "./Elements";
 
 /**
- * {
- *  classList: ['class1', 'class2'],
- *  selectItem: new core.Select(),
- *  cellFormatter: function () {
- *      return "";
- *  },
- *  cellClassFormatter: function () {
- *      return ['class1', 'class2']
- *  }
  *
- * }
+ * @param data
+ * @param {object} [options]
+ * @param {function} [options.cellFormatter]
+ * @param {function} [options.cellClassFormatter]
+ * @param {Array} [options.classList]
+ * @param {Select} [options.selectItem]
+ * @param {object} rowData
+ *
+ *
  */
 class Cell {
 
@@ -66,7 +65,7 @@ class Cell {
 
             if (this.data == null) {
                 this.cell.innerHTML = '';
-            } else if (this.data.innerHTML != undefined) {
+            } else if (this.data.innerHTML != undefined || this.data instanceof DocumentFragment) {
                 this.cell.appendChild(this.data);
             } else if (this.data[0] instanceof Object) {
                 this.cell.appendChild(this.data[0]);

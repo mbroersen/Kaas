@@ -1,16 +1,39 @@
 import Row from './Row';
 
+/**
+ *
+ */
 class JsonParser
 {
+    /**
+     *
+     * @param {Object} [options]
+     * @param {Function} [options.rowHandler]
+     * @param {boolean} [options.selectable]
+     */
     constructor (options)
     {
+        /**
+         *
+         * @type {Function}
+         */
         this.rowHandler = options.rowHandler || function (data) {return data};
+
+        /**
+         *
+         * @type {boolean}
+         */
         this.rowIsSelectable = options.selectable || true;
 
         /**
          * @var sbjs.component.datagrid.data.Row[]
          */
         this.proccessedData = [];
+
+        /**
+         *
+         * @type {Object}
+         */
         this.options = options || {};
     };
 

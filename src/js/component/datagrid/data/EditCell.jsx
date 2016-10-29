@@ -14,9 +14,15 @@ import elements from './Elements';
 class EditCell extends Cell {
 
     /**
+     * @extends Cell
      *
      * @param data
-     * @param options
+     * @param [options]
+     * @param [options.rawData]
+     * @param [options.fieldName]
+     * @param [options.form]
+     * @param [options.saveDataFormatter]
+     * @param [options.rowIsSelected]
      * @param rowData
      */
     constructor(data, options, rowData)

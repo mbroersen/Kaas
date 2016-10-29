@@ -11,7 +11,15 @@ class Row
     /**
      *
      * @param rowData
-     * @param options
+     * @param {Object} [options]
+     * @param {{fieldName: {String}, form: {HTMLFormElement}, saveDataFormatter: {Function}}[]} [options.editableCells]
+     * @param {{Function}[]} [options.cellFormatters]
+     * @param {{Function}[]} [options.sortFormatters]
+     * @param {Function}[options.rowHandler]
+     * @param {{Function}[]}[options.cellClassFormatters]
+     * @param {Function}[options.rowSaveHandler]
+     * @param {boolean} [options.rowIsSelectable]
+     * @param {boolean} [options.rowIsSelected]
      */
     constructor (rowData, options)
     {
